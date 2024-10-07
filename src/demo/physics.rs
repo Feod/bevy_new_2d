@@ -3,7 +3,7 @@ use bevy_rapier2d::prelude::*;
 
 pub(super) fn plugin(app: &mut App) {
     app.add_plugins(RapierPhysicsPlugin::<NoUserData>::default());
-    app.add_systems(Update, spawn_physics_entity);
+    app.add_startup_system(spawn_physics_entity);
 }
 
 fn spawn_physics_entity(mut commands: Commands) {
