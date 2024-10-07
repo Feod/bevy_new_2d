@@ -81,7 +81,7 @@ fn trigger_step_sound_effect(
     }
 }
 
-#[derive(Component, Reflect)]
+#[derive(Component, Reflect, Clone)]
 #[reflect(Component)]
 pub struct PlayerAnimation {
     timer: Timer,
@@ -89,7 +89,7 @@ pub struct PlayerAnimation {
     state: PlayerAnimationState,
 }
 
-#[derive(Reflect, PartialEq)]
+#[derive(Reflect, PartialEq, Clone)]
 pub enum PlayerAnimationState {
     Idling,
     Walking,
