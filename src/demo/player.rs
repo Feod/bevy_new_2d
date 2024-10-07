@@ -59,7 +59,7 @@ fn spawn_player(
         Player,
         SpriteBundle {
             texture: player_assets.ducky.clone(),
-            transform: Transform::from_translation(Vec3::new(-50.0, 0.0, 0.0))
+            transform: Transform::from_translation(Vec3::new(-100.0, 0.0, 0.0))
                 .with_scale(Vec2::splat(8.0).extend(1.0)),
             ..Default::default()
         },
@@ -84,7 +84,7 @@ fn spawn_player(
         Player,
         SpriteBundle {
             texture: player_assets.ducky.clone(),
-            transform: Transform::from_translation(Vec3::new(50.0, 0.0, 0.0))
+            transform: Transform::from_translation(Vec3::new(100.0, 0.0, 0.0))
                 .with_scale(Vec2::splat(8.0).extend(1.0)),
             ..Default::default()
         },
