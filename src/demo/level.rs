@@ -20,13 +20,10 @@ pub fn spawn_level(world: &mut World) {
 }
 
 fn spawn_physics_cube(world: &mut World) {
-    let player_assets = world.resource::<PlayerAssets>();
-    let texture_handle = player_assets.ducky.clone();
-
     world.spawn((
         Name::new("Physics Cube"),
         SpriteBundle {
-            texture: texture_handle,
+            texture: "TODO: ADD pureWhiteSquare.png",
             transform: Transform::from_scale(Vec2::splat(8.0).extend(1.0)),
             ..Default::default()
         },

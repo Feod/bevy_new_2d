@@ -61,7 +61,6 @@ impl Plugin for AppPlugin {
             demo::plugin,
             screens::plugin,
             theme::plugin,
-            RapierPhysicsPlugin::<NoUserData>::default(),
         ));
 
         // Enable dev tools for dev builds.
