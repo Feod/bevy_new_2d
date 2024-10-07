@@ -46,6 +46,18 @@ Feel free to move things around however you want, though.
 > [!Tip]
 > Be sure to check out the [3rd-party tools](./docs/tooling.md) we recommend!
 
+### Physics System
+
+This template includes a basic physics system using the Rapier 2D physics engine. The physics system is implemented in the `src/demo/physics.rs` file and is integrated into the main application.
+
+To use the physics system, you can follow these steps:
+
+1. Add the `RapierPhysicsPlugin` to your app in the `src/lib.rs` file.
+2. Implement your physics logic in the `src/demo/physics.rs` file.
+3. Add the `physics::plugin` to the list of plugins in the `src/demo/mod.rs` file.
+
+You can find an example of a physics-enabled entity in the `spawn_physics_entity` function in the `src/demo/physics.rs` file.
+
 ## Run your game
 
 Running your game locally is very simple:
