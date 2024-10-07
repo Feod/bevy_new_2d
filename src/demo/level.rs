@@ -1,4 +1,5 @@
 use bevy::{ecs::world::Command, prelude::*};
+use bevy_rapier2d::prelude::*; // P5793
 
 use crate::demo::player::SpawnPlayer;
 
@@ -30,4 +31,6 @@ fn spawn_physics_square(world: &mut World) {
         transform: Transform::from_scale(Vec3::splat(50.0)),
         ..Default::default()
     });
+    commands.insert(RigidBody::Dynamic); // P5793
+    commands.insert(Collider::cuboid(25.0, 25.0)); // P6080
 }
