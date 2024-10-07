@@ -49,21 +49,43 @@ fn spawn_player(
     player_assets: Res<PlayerAssets>,
     mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
 ) {
-    // A texture atlas is a way to split one image with a grid into multiple
-    // sprites. By attaching it to a [`SpriteBundle`] and providing an index, we
-    // can specify which section of the image we want to see. We will use this
-    // to animate our player character. You can learn more about texture atlases in
-    // this example: https://github.com/bevyengine/bevy/blob/latest/examples/2d/texture_atlas.rs
     let layout = TextureAtlasLayout::from_grid(UVec2::splat(32), 6, 2, Some(UVec2::splat(1)), None);
     let texture_atlas_layout = texture_atlas_layouts.add(layout);
     let player_animation = PlayerAnimation::new();
 
+    // Spawn the first player duck
     commands.spawn((
-        Name::new("Player"),
+        Name::new("Player1"),
         Player,
         SpriteBundle {
             texture: player_assets.ducky.clone(),
-            transform: Transform::from_scale(Vec2::splat(8.0).extend(1.0)),
+            transform: Transform::from_translation(Vec3::new(-50.0, 0.0, 0.0))
+                .with_scale(Vec2::splat(8.0).extend(1.0)),
+            ..Default::default()
+        },
+        TextureAtlas {
+            layout: texture_atlas_layout.clone(),
+            index: player_animation.get_atlas_index(),
+        },
+        MovementController {
+            max_speed: config.max_speed,
+            ..default()
+        },
+        ScreenWrap,
+        player_animation.clone(),
+        StateScoped(Screen::Gameplay),
+        RigidBody::KinematicPositionBased,
+        Collider::cuboid(16.0, 16.0),
+    ));
+
+    // Spawn the second player duck
+    commands.spawn((
+        Name::new("Player2"),
+        Player,
+        SpriteBundle {
+            texture: player_assets.ducky.clone(),
+            transform: Transform::from_translation(Vec3::new(50.0, 0.0, 0.0))
+                .with_scale(Vec2::splat(8.0).extend(1.0)),
             ..Default::default()
         },
         TextureAtlas {
@@ -86,7 +108,6 @@ fn record_player_directional_input(
     input: Res<ButtonInput<KeyCode>>,
     mut controller_query: Query<&mut MovementController, With<Player>>,
 ) {
-    // Collect directional input.
     let mut intent = Vec2::ZERO;
     if input.pressed(KeyCode::KeyW) || input.pressed(KeyCode::ArrowUp) {
         intent.y += 1.0;
@@ -101,12 +122,8 @@ fn record_player_directional_input(
         intent.x += 1.0;
     }
 
-    // Normalize so that diagonal movement has the same speed as
-    // horizontal and vertical movement.
-    // This should be omitted if the input comes from an analog stick instead.
     let intent = intent.normalize_or_zero();
 
-    // Apply movement intent to controllers.
     for mut controller in &mut controller_query {
         controller.intent = intent;
     }
@@ -114,8 +131,6 @@ fn record_player_directional_input(
 
 #[derive(Resource, Asset, Reflect, Clone)]
 pub struct PlayerAssets {
-    // This #[dependency] attribute marks the field as a dependency of the Asset.
-    // This means that it will not finish loading until the labeled asset is also loaded.
     #[dependency]
     pub ducky: Handle<Image>,
     #[dependency]
@@ -137,7 +152,6 @@ impl FromWorld for PlayerAssets {
             ducky: assets.load_with_settings(
                 PlayerAssets::PATH_DUCKY,
                 |settings: &mut ImageLoaderSettings| {
-                    // Use `nearest` image sampling to preserve the pixel art style.
                     settings.sampler = ImageSampler::nearest();
                 },
             ),
