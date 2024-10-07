@@ -53,13 +53,6 @@ fn spawn_player(
     let texture_atlas_layout = texture_atlas_layouts.add(layout);
     let player_animation = PlayerAnimation::new();
 
-    commands.spawn((
-        RigidBody::KinematicPositionBased,
-        Collider::cuboid(50.0, 50.0),
-        Transform::from_xyz(0.0, 0.0, 0.0),
-        GlobalTransform::default(),
-    ));
-
     // Spawn the first player duck
     commands.spawn((
         Name::new("Player1"),
@@ -81,6 +74,7 @@ fn spawn_player(
         ScreenWrap,
         player_animation.clone(),
         StateScoped(Screen::Gameplay),
+        Velocity::default(),
         RigidBody::KinematicPositionBased,
         Collider::cuboid(16.0, 16.0),
     ));
@@ -106,6 +100,7 @@ fn spawn_player(
         ScreenWrap,
         player_animation,
         StateScoped(Screen::Gameplay),
+        Velocity::default(),
         RigidBody::KinematicPositionBased,
         Collider::cuboid(16.0, 16.0),
     ));

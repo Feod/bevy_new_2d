@@ -1,4 +1,5 @@
 use bevy::{prelude::*, window::PrimaryWindow};
+use bevy_rapier2d::prelude::*;
 
 use crate::AppSet;
 
@@ -40,11 +41,12 @@ impl Default for MovementController {
 
 fn apply_movement(
     time: Res<Time>,
-    mut movement_query: Query<(&MovementController, &mut Transform)>,
+    mut movement_query: Query<(&MovementController, &mut RigidBody, &mut Velocity)>,
 ) {
-    for (controller, mut transform) in &mut movement_query {
-        let velocity = controller.max_speed * controller.intent;
-        transform.translation += velocity.extend(0.0) * time.delta_seconds();
+    for (controller, mut rigid_body, mut velocity) in &mut movement_query {
+        let force = controller.max_speed * controller.intent;
+        rigid_body.apply_force(force, true);
+        velocity.linvel = force * time.delta_seconds();
     }
 }
 
