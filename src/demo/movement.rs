@@ -41,12 +41,11 @@ impl Default for MovementController {
 
 fn apply_movement(
     time: Res<Time>,
-    mut movement_query: Query<(&MovementController, &mut RigidBody, &mut Velocity)>,
+    mut movement_query: Query<(&MovementController, &mut Transform)>,
 ) {
-    for (controller, mut rigid_body, mut velocity) in &mut movement_query {
-        let force = controller.max_speed * controller.intent;
-        rigid_body.apply_force(force, true);
-        velocity.linvel = force * time.delta_seconds();
+    for (controller, mut transform) in &mut movement_query {
+        let delta = controller.max_speed * controller.intent * time.delta_seconds();
+        transform.translation += delta.extend(0.0);
     }
 }
 

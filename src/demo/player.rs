@@ -74,7 +74,6 @@ fn spawn_player(
         ScreenWrap,
         player_animation.clone(),
         StateScoped(Screen::Gameplay),
-        Velocity::default(),
         RigidBody::KinematicPositionBased,
         Collider::cuboid(16.0, 16.0),
     ));
@@ -100,7 +99,6 @@ fn spawn_player(
         ScreenWrap,
         player_animation,
         StateScoped(Screen::Gameplay),
-        Velocity::default(),
         RigidBody::KinematicPositionBased,
         Collider::cuboid(16.0, 16.0),
     ));
