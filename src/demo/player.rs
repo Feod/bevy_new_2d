@@ -1,12 +1,9 @@
-//! Plugin handling the player character in particular.
-//! Note that this is separate from the `movement` module as that could be used
-//! for other characters as well.
-
 use bevy::{
     ecs::{system::RunSystemOnce as _, world::Command},
     prelude::*,
     render::texture::{ImageLoaderSettings, ImageSampler},
 };
+use bevy_rapier2d::prelude::*;
 
 use crate::{
     asset_tracking::LoadResource,
@@ -80,6 +77,8 @@ fn spawn_player(
         ScreenWrap,
         player_animation,
         StateScoped(Screen::Gameplay),
+        RigidBody::KinematicPositionBased,
+        Collider::cuboid(16.0, 16.0),
     ));
 }
 
