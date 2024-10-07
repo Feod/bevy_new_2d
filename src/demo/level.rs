@@ -1,7 +1,6 @@
 use bevy::{ecs::world::Command, prelude::*};
-use bevy_rapier2d::prelude::*;
 
-use crate::demo::player::{PlayerAssets, SpawnPlayer};
+use crate::demo::player::SpawnPlayer;
 
 pub(super) fn plugin(_app: &mut App) {
     // No setup required for this plugin.
@@ -16,20 +15,19 @@ pub fn spawn_level(world: &mut World) {
     // The only thing we have in our level is a player,
     // but add things like walls etc. here.
     SpawnPlayer { max_speed: 400.0 }.apply(world);
-    spawn_physics_cube(world);
+    spawn_physics_square(world);
 }
 
-fn spawn_physics_cube(world: &mut World) {
-    world.spawn((
-        Name::new("Physics Cube"),
-        SpriteBundle {
-            texture: "TODO: ADD pureWhiteSquare.png",
-            transform: Transform::from_scale(Vec2::splat(8.0).extend(1.0)),
-            ..Default::default()
-        },
-        RigidBody::Dynamic,
-        Collider::cuboid(50.0, 50.0),
-        Transform::from_xyz(0.0, 0.0, 0.0),
-        GlobalTransform::default(),
-    ));
+fn spawn_physics_square(world: &mut World) {
+    let texture_handle = {
+        let asset_server = world.resource::<AssetServer>();
+        asset_server.load("images/WhiteSquare.png")
+    };
+
+    let mut commands = world.spawn();
+    commands.insert_bundle(SpriteBundle {
+        texture: texture_handle,
+        transform: Transform::from_scale(Vec3::splat(50.0)),
+        ..Default::default()
+    });
 }
