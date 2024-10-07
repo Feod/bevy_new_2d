@@ -21,7 +21,7 @@ pub fn spawn_level(world: &mut World) {
     world.spawn((
         RigidBody::Fixed,
         Collider::cuboid(50.0, 50.0),
-        Transform::from_xyz(100.0, 0.0, 0.0),
+        Transform::from_xyz(1.0, 0.0, 0.0),
         GlobalTransform::default(),
     ));
 }
